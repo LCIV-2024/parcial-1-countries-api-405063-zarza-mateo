@@ -1,19 +1,19 @@
 package ar.edu.utn.frc.tup.lciii.model;
 
+
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
 import java.util.List;
 import java.util.Map;
 
-@Getter
-@Setter
-@Builder
+@Data
 @AllArgsConstructor
 @NoArgsConstructor
+@Builder
+
 public class Country {
     private String name;
     private long population;
