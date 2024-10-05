@@ -22,12 +22,12 @@ public class CountryController {
     }
 
     @GetMapping("/countries/{continent}/continent")
-    List<CountryDTO> getCountryByContinent(@RequestParam String region){
+    List<CountryDTO> getCountryByContinent(@PathVariable String region){
         return  countryService.getCountryByContinent(region);
     }
 
     @GetMapping("/countries/{language}/language")
-    List<CountryDTO> getCountriesByLanguage(@RequestParam String language){
+    List<CountryDTO> getCountriesByLanguage(@PathVariable String language){
         return  countryService.getCountryByLanguage(language);
     }
 

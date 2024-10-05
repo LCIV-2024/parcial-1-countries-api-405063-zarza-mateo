@@ -1,5 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.controllers;
 
+import ar.edu.utn.frc.tup.lciii.dtos.CountryDTO;
 import ar.edu.utn.frc.tup.lciii.model.Country;
 import ar.edu.utn.frc.tup.lciii.model.CountryEntity;
 import ar.edu.utn.frc.tup.lciii.service.CountryService;
@@ -56,21 +57,35 @@ class CountryControllerTest {
 
     @Test
     void getCountryByContinent() throws Exception {
-        String continente = "Americas";
-        doReturn(countries).when(countryService).getCountryByContinent(continente);
-        mockMvc.perform(get("/countries/{continent}/continent", continente)
+        String continent = "Americas";
+        doReturn(countries).when(countryService).getCountryByContinent(continent);
+        mockMvc.perform(get("/countries/{continent}/continent", continent)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
-        verify(countryService, times(1)).getCountryByContinent(continente);
-
+        verify(countryService, times(1)).getCountryByContinent(continent);
 
     }
 
     @Test
-    void getCountriesByLanguage() {
+    void getCountriesByLanguage() throws Exception {
+        String language = "Spanish";
+        doReturn(countries).when(countryService).getCountryByContinent(language);
+        mockMvc.perform(get("/countries/{language}/language", language)
+                        .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
+        verify(countryService, times(1)).getCountryByLanguage(language);
+
     }
 
-    @Test
-    void getCountryMostBorders() {
-    }
+        @Test
+    void getCountryMostBorders() throws Exception {
+            CountryDTO countryDTO = new CountryDTO("CN", "China");
+            doReturn(countryDTO).when(countryService).getCountryMostBorders();
+            mockMvc.perform(get("/countries/most-borders")
+                            .contentType(MediaType.APPLICATION_JSON))
+                    .andExpect(status().isOk());
+            verify(countryService, times(1)).getCountryMostBorders();
+
+
+        }
 }
