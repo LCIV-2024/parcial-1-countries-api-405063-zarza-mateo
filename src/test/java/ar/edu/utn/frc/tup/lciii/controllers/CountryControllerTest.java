@@ -17,6 +17,7 @@ import java.util.List;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -69,7 +70,7 @@ class CountryControllerTest {
     @Test
     void getCountriesByLanguage() throws Exception {
         String language = "Spanish";
-        doReturn(countries).when(countryService).getCountryByContinent(language);
+        doReturn(countries).when(countryService).getCountryByLanguage(language);
         mockMvc.perform(get("/countries/{language}/language", language)
                         .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -86,6 +87,16 @@ class CountryControllerTest {
                     .andExpect(status().isOk());
             verify(countryService, times(1)).getCountryMostBorders();
 
-
         }
+
+    @Test
+    void SaveRandomCountries() throws Exception {
+        when(countryService.saveRandomCountries(anyInt())).thenReturn(List.of(new CountryDTO("ARG", "Argentina")));
+        mockMvc.perform(post("/countries")
+                        .contentType("application/json")
+                        .content("{\"amountOfCountryToSave\": 2}"))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$[0].code").value("ARG"))
+                .andExpect(jsonPath("$[0].name").value("Argentina"));
+    }
 }

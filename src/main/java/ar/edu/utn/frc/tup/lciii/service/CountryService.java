@@ -3,6 +3,7 @@ package ar.edu.utn.frc.tup.lciii.service;
 import ar.edu.utn.frc.tup.lciii.dtos.CountryDTO;
 import ar.edu.utn.frc.tup.lciii.exception.CountryNotFoundException;
 import ar.edu.utn.frc.tup.lciii.model.Country;
+import ar.edu.utn.frc.tup.lciii.model.CountryEntity;
 import ar.edu.utn.frc.tup.lciii.repository.CountryRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -159,6 +160,29 @@ public class CountryService {
                 .orElseThrow(() -> new CountryNotFoundException("An error has been found getting the countrise."));
     }
 
+
+    public List<CountryDTO> saveRandomCountries(int amount) {
+        List<Country> allCountries = getAllCountries(null, null);
+        if (amount > 10) {
+            throw new IllegalArgumentException("The máximum number ofcountries to save is 10.");
+        }
+        Collections.shuffle(allCountries);
+        List<Country> countriesToSaveHelper = allCountries.stream()
+                .limit(amount)
+                .collect(Collectors.toList());
+        List<CountryEntity> countriesToSave = new ArrayList<>();
+        for (Country country : countriesToSaveHelper) {
+            CountryEntity  countryEntity = new CountryEntity();
+            countryEntity.setId((long) countriesToSaveHelper.indexOf(country));
+            countryEntity.setCode(country.getCode());
+            countryEntity.setName(country.getName());
+            countriesToSave.add(countryEntity);
+        }
+        List<CountryEntity> savedCountries = countryRepository.saveAll(countriesToSave);
+        return countriesToSaveHelper.stream()
+                .map(this::mapToDTO)
+                .collect(Collectors.toList());
+    }
 
     /**
      * Agregar mapeo de campo cca3 (String)

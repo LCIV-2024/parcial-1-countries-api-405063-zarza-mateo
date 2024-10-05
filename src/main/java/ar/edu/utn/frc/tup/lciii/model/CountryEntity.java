@@ -2,6 +2,7 @@ package ar.edu.utn.frc.tup.lciii.model;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -10,6 +11,7 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @Entity
 @Table(name = "countries")
+@Builder
 public class CountryEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

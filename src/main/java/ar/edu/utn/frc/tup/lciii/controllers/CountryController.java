@@ -1,5 +1,6 @@
 package ar.edu.utn.frc.tup.lciii.controllers;
 import ar.edu.utn.frc.tup.lciii.dtos.CountryDTO;
+import ar.edu.utn.frc.tup.lciii.dtos.CountryRequest;
 import ar.edu.utn.frc.tup.lciii.model.Country;
 import ar.edu.utn.frc.tup.lciii.service.CountryService;
 import lombok.RequiredArgsConstructor;
@@ -35,4 +36,15 @@ public class CountryController {
     CountryDTO GetCountryMostBorders(){
         return  countryService.getCountryMostBorders();
     }
+
+    @PostMapping("/countries")
+    public List<CountryDTO> saveRandomCountries(@RequestBody CountryRequest request) {
+        int amountToSave = request.getAmountOfCountryToSave();
+        if (amountToSave > 10) {
+            throw new IllegalArgumentException("The maximum numberof countries to save is 10.");
+        }
+
+        return countryService.saveRandomCountries(amountToSave);
+    }
+
 }
